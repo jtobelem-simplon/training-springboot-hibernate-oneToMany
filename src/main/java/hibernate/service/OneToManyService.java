@@ -93,7 +93,7 @@ public class OneToManyService {
 		
 		String hql = "FROM Etudiant E WHERE E.nom like :nom"; // the java class, not entity
 		TypedQuery<Etudiant> query = em.createQuery(hql, Etudiant.class);
-		query.setParameter("nom", "%ega%");
+		query.setParameter("nom", "%eg%");
 		List<Etudiant> results = query.getResultList();
 
 		for (Etudiant etudiant : results) {
