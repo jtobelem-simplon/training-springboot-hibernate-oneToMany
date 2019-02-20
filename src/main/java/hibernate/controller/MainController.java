@@ -27,6 +27,7 @@ public class MainController {
 	
 	@GetMapping("/init")
 	public void create() {
+		mainService.delete();
 		mainService.create();
 	}
 
