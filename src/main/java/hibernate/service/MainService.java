@@ -19,7 +19,7 @@ import hibernate.repository.EtudiantRepository;
 import hibernate.repository.GroupeRepository;
 
 @Service
-public class OneToManyService {
+public class MainService {
 
 	private static final Logger log = LoggerFactory.getLogger(Application.class);
 
@@ -28,7 +28,7 @@ public class OneToManyService {
 
 	@Autowired
 	EtudiantRepository etudiantRepository;
-	
+
 	@PersistenceContext
 	private EntityManager em;
 
@@ -88,12 +88,54 @@ public class OneToManyService {
 		groupeRepository.deleteAllInBatch();
 	}
 
-	public void hqlQuery(String etudiantNom) {
-		log.info(">> HQL query");
+	/**
+	 * Pour illustrer l'utilisation de requêtes personnalisées. Pour les créer, il
+	 * suffit d'ajouter leur signature dans l'interface du repository.
+	 */
+	public void specificQueries() {
+		log.info(">> Specific queries");
+		log.info(">>>> findAllByOrderByNomDesc");
+
+		List<Etudiant> etudiants = etudiantRepository.findAllByOrderByNomDesc();
+
+		for (Etudiant etudiant : etudiants) {
+			log.info(etudiant.getNom());
+		}
+
+		log.info(">>>> findTop3ByOrderByNomAsc");
+		etudiants = etudiantRepository.findTop3ByOrderByNomAsc();
+
+		for (Etudiant etudiant : etudiants) {
+			log.info(etudiant.getNom());
+		}
 		
+		log.info(">>>> findByNomContainingIgnoreCase");
+		etudiants = etudiantRepository.findByNomContainingIgnoreCase("dy");
+
+		for (Etudiant etudiant : etudiants) {
+			log.info(etudiant.getNom());
+		}
+		
+		log.info(">>>> findByNom");
+		etudiants = etudiantRepository.findByNom("DESOBEAU TEDDY");
+
+		for (Etudiant etudiant : etudiants) {
+			log.info(etudiant.getNom());
+		}
+	}
+
+	/**
+	 * Pour illustrer l'utilisation de requêtes HQL. Il faut avoir une instance
+	 * d'entityManager.
+	 */
+	public void hqlQuery() {
+		String nomLike = "eg";
+
+		log.info(">> HQL query");
+
 		String hql = "FROM Etudiant E WHERE E.nom like :nom"; // the java class, not entity
 		TypedQuery<Etudiant> query = em.createQuery(hql, Etudiant.class);
-		query.setParameter("nom", "%eg%");
+		query.setParameter("nom", '%' + nomLike + '%');
 		List<Etudiant> results = query.getResultList();
 
 		for (Etudiant etudiant : results) {

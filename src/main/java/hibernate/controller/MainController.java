@@ -4,23 +4,21 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PatchMapping;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import hibernate.model.Etudiant;
 import hibernate.repository.EtudiantRepository;
-import hibernate.service.OneToManyService;
+import hibernate.service.MainService;
 
 
 @RestController
-public class OneToManyController {
+public class MainController {
 	
 	@Autowired
 	EtudiantRepository etudiantRepository;
 	
 	@Autowired
-	OneToManyService crudService;
+	MainService mainService;
 	
 	@GetMapping("/etudiants")
 	public List<Etudiant> getAllPeople(){
@@ -29,7 +27,7 @@ public class OneToManyController {
 	
 	@GetMapping("/init")
 	public void create() {
-		crudService.create();
+		mainService.create();
 	}
 
 }
